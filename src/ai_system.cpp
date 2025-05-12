@@ -150,14 +150,14 @@ void AISystem::boss_shoot(Boss& boss, Motion& motion, const vec2& player_pos, fl
 	boss.powerup_duration_ms -= elapsed_ms;
 
 	switch (boss.bstate) {
-	case BulletState::Default: {
+	case BulletState::DEFAULT: {
 		if (boss.time_since_last_shot_ms >= boss.shoot_interval_ms) {
 			create_enemy_bullet(renderer, motion.position, bullet_direction * 320.0f, angle_diff, 25, { 1,0.5,0 });
 			boss.time_since_last_shot_ms = 0;
 		}
 		return;
 	}
-	case BulletState::Grape: {
+	case BulletState::GRAPE: {
 		if (boss.time_since_last_shot_ms >= boss.shoot_interval_ms) {
 			angle_diff = -3.02989;
 			shootGrapeBullets(renderer, motion.position, bullet_direction, up_angle, angle_diff);
@@ -165,7 +165,7 @@ void AISystem::boss_shoot(Boss& boss, Motion& motion, const vec2& player_pos, fl
 		}
 		break;
 	}
-	case BulletState::Cactus: {
+	case BulletState::CACTUS: {
 		if (boss.time_since_last_shot_ms >= boss.shoot_interval_ms * 1.5) {
 			//todo:change_shape
 			create_enemy_bullet(renderer, motion.position, bullet_direction * 580.0f, angle_diff, 25, { 1,0,0 });
@@ -173,7 +173,7 @@ void AISystem::boss_shoot(Boss& boss, Motion& motion, const vec2& player_pos, fl
 		}
 		break;
 	}
-	case BulletState::Cherry: {
+	case BulletState::CHERRY: {
 		if (boss.time_since_last_shot_ms >= boss.shoot_interval_ms * 2) {
 			vec2 side_direction = vec2(-bullet_direction.y, bullet_direction.x);
 			create_enemy_bullet(renderer, motion.position, (bullet_direction + side_direction * 0.3f) * 320.0f, angle_diff, 15, { 1,0.5,0 });
@@ -183,14 +183,14 @@ void AISystem::boss_shoot(Boss& boss, Motion& motion, const vec2& player_pos, fl
 		}
 		break;
 	}
-	case BulletState::Protein: {
+	case BulletState::PROTEIN: {
 		if (boss.time_since_last_shot_ms >= boss.shoot_interval_ms / 4) {
 			create_enemy_bullet(renderer, motion.position, bullet_direction * 290.0f, angle_diff, 10, { 1,0.5,0 });
 			boss.time_since_last_shot_ms = 0;
 		}
 		break;
 	}
-	case BulletState::Lemon: {
+	case BulletState::LEMON: {
 		if (boss.time_since_last_shot_ms >= boss.shoot_interval_ms / 2) {
 			create_enemy_bullet(renderer, motion.position, bullet_direction * 320.f, angle_diff, 50, { 0.5,1,0 });
 			boss.time_since_last_shot_ms = 0;
@@ -199,7 +199,7 @@ void AISystem::boss_shoot(Boss& boss, Motion& motion, const vec2& player_pos, fl
 	}
 	}
 
-	if (boss.powerup_duration_ms < 0) boss.bstate = BulletState::Default;
+	if (boss.powerup_duration_ms < 0) boss.bstate = BulletState::DEFAULT;
 }
 
 

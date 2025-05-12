@@ -28,12 +28,12 @@ enum class PowerupType {
 };
 
 enum class BulletState {
-	Default = 0,
-	Protein = Default+ 1,
-	Grape = Protein +1,
-	Lemon = Grape + 1,
-	Cherry = Lemon + 1,
-	Cactus = Cherry +1,
+	DEFAULT = 0,
+	PROTEIN = DEFAULT+ 1,
+	GRAPE = PROTEIN +1,
+	LEMON = GRAPE + 1,
+	CHERRY = LEMON + 1,
+	CACTUS = CHERRY +1,
 };
 
 enum class SniperState {
@@ -79,7 +79,7 @@ enum class BossState {
 
 struct Boss {
 	BossState state = BossState::Default;
-	BulletState bstate = BulletState::Default;
+	BulletState bstate = BulletState::DEFAULT;
 	float aim_timer = 0;
 	float shoot_interval_ms = 20.0f;
 	float time_since_last_shot_ms = 0.0f;
