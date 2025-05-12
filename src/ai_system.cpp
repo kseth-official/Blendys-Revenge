@@ -303,7 +303,7 @@ void AISystem::updateTank(Entity tankEntity, vec2 chase_direction,
 	float distanceToPlayer = calculateDistance(motion.position, player_pos);
 
 	switch (tank.state) {
-	case TankState::defualt: {
+	case TankState::DEFAULT: {
 		if (registry.snipers.entities.size() != 0) {
 			Entity closestSniper = findClosestSniper(motion.position);
 			if (!registry.players.has(closestSniper)) {
@@ -311,17 +311,17 @@ void AISystem::updateTank(Entity tankEntity, vec2 chase_direction,
 				sniper_protect.link = tankEntity;
 				auto& tank_protect = registry.protections.emplace(tankEntity);
 				tank_protect.link = closestSniper;
-				tank.state = TankState::protecting;
+				tank.state = TankState::PROTECTING;
 			}
 		}
 		motion.velocity = chase_direction * enemy.speed;
 		break;
 	}
-	case TankState::protecting: {
+	case TankState::PROTECTING: {
 		auto& protect = registry.protections.get(tankEntity);
 		if (!registry.protections.has(protect.link)) {
 			registry.protections.remove(tankEntity);
-			tank.state = TankState::defualt;
+			tank.state = TankState::DEFAULT;
 			motion.velocity = chase_direction * enemy.speed;
 			break;
 		}

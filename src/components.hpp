@@ -44,8 +44,8 @@ enum class SniperState {
 };
 
 enum class TankState {
-	defualt,
-	protecting,
+	DEFAULT,
+	PROTECTING,
 };
 
 enum class EnemyType {
@@ -199,7 +199,7 @@ struct Giant {
 };
 
 struct Tank {
-	TankState state = TankState::defualt;
+	TankState state = TankState::DEFAULT;
 };
 
 struct Protection {
