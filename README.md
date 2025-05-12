@@ -6,7 +6,7 @@ My role was primarily as a Programmer, Project Manager, and Game Designer.
 
 ## Peak Gameplay
 <p align="center">
-  <img src="PeakGameplay.gif" alt="A video showcasing late-game gameplay." />
+  <img src="doc/readme/PeakGameplay.gif" alt="A video showcasing late-game gameplay." />
 </p>
 
 ## Some things I programmed:
