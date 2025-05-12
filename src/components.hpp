@@ -146,11 +146,10 @@ struct Player {
 	int going_up = -1;
 	float invisible_counter = 0.0f;
 	float max_invisible_duration = 100.f;
-	std::map<Direction, Mesh> meshes;
+	std::unordered_map<Direction, Mesh> meshes;
 
+	// Kush: Was this to configure direction-based meshes for Blendy?
 	//static const std::map<Direction, std::string> direction_mesh;
-
-
 };
 
 static const std::map<Direction, std::string> blendy_direction_mesh = {

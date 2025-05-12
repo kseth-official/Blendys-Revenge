@@ -6,9 +6,9 @@
 
 //vec2 normalize(const vec2&);
 float duration = 0;
-std::map<Direction, Mesh> PhysicsSystem::loaded_blendy_meshes;
-std::map<Direction, Mesh> PhysicsSystem::loaded_minion_meshes;
-std::map<Direction, Mesh> PhysicsSystem::loaded_boss_meshes;
+std::unordered_map<Direction, Mesh> PhysicsSystem::loaded_blendy_meshes;
+std::unordered_map<Direction, Mesh> PhysicsSystem::loaded_minion_meshes;
+std::unordered_map<Direction, Mesh> PhysicsSystem::loaded_boss_meshes;
 
 bool isParallel(const std::vector<vec2>&, const vec2&);
 std::pair<float, float> projectOntoAxis(const std::vector<vec2>&, const vec2&);
