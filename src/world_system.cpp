@@ -1161,17 +1161,17 @@ void WorldSystem::handle_collisions() {
 						break;
 					case PowerupType::GRAPE:
 						boss.bstate = static_cast<BulletState>((int)powerup.type);
-						boss.state = BossState::Shooting;
+						boss.state = BossState::SHOOTING;
 						boss.powerup_duration_ms = 300;
 						break;
 					case PowerupType::	PROTEIN:
 						boss.bstate = static_cast<BulletState>((int)powerup.type);
-						boss.state = BossState::Shooting;
+						boss.state = BossState::SHOOTING;
 						boss.powerup_duration_ms = 130;
 						break;
 					case PowerupType::CACTUS:
 						boss.bstate = static_cast<BulletState>((int)powerup.type);
-						boss.state = BossState::Shooting;
+						boss.state = BossState::SHOOTING;
 						boss.powerup_duration_ms = 200;
 						break;
 					default:
