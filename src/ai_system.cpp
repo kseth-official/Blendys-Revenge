@@ -412,9 +412,9 @@ void AISystem::updateCharger(Entity chargerEntity, vec2 chase_direction,
 
 
 	switch (charger.state) {
-	case ChargerState::Approaching:
+	case ChargerState::APPROACHING:
 		if (distanceToPlayer <= CHARGER_AGGRO_RANGE) {
-			charger.state = ChargerState::Aiming;
+			charger.state = ChargerState::AIMING;
 			charger.aim_timer = CHARGER_AIM_TIME;
 		}
 		else {
@@ -422,7 +422,7 @@ void AISystem::updateCharger(Entity chargerEntity, vec2 chase_direction,
 
 		}
 		break;
-	case ChargerState::Aiming:
+	case ChargerState::AIMING:
 	{
 		motion.velocity = { 0, 0 };
 
@@ -433,20 +433,20 @@ void AISystem::updateCharger(Entity chargerEntity, vec2 chase_direction,
 		registry.colors.insert(chargerEntity, color);
 		if (charger.aim_timer <= 0) {
 			charger.aim_timer = 0;
-			charger.state = ChargerState::Charging;
+			charger.state = ChargerState::CHARGING;
 			charger.charge_direction = chase_direction;
 		}
 	}
 	break;
-	case ChargerState::Charging:
+	case ChargerState::CHARGING:
 		motion.velocity = charger.charge_direction * CHARGER_CHARGE_SPEED * enemy.speed;
 		charger.rest_timer += elapsed_ms * 2;
 		if (charger.rest_timer >= CHARGER_REST_TIME) {
 			charger.rest_timer = 80;
-			charger.state = ChargerState::Resting;
+			charger.state = ChargerState::RESTING;
 		}
 		break;
-	case ChargerState::Resting:
+	case ChargerState::RESTING:
 	{
 		motion.velocity = chase_direction * enemy.speed * ((80 - charger.rest_timer) / 80);
 
@@ -456,7 +456,7 @@ void AISystem::updateCharger(Entity chargerEntity, vec2 chase_direction,
 		registry.colors.insert(chargerEntity, color);
 		charger.rest_timer -= elapsed_ms;
 		if (charger.rest_timer <= 0) {
-			charger.state = ChargerState::Approaching;
+			charger.state = ChargerState::APPROACHING;
 		}
 	}
 	break;

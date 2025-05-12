@@ -63,10 +63,10 @@ enum class EnemyType {
 };
 
 enum class ChargerState {
-	Approaching = 0,
-	Aiming = Approaching + 1,
-	Charging = Aiming +1,
-	Resting = Charging + 1,
+	APPROACHING = 0,
+	AIMING = APPROACHING + 1,
+	CHARGING = AIMING +1,
+	RESTING = CHARGING + 1,
 };
 
 enum class BossState {
@@ -184,7 +184,7 @@ struct Roamer {
 };
 
 struct Charger {
-	ChargerState state = ChargerState::Approaching;
+	ChargerState state = ChargerState::APPROACHING;
 	float aim_timer = 0;
 	vec2 charge_direction;
 	float rest_timer = 0;
