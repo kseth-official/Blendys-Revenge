@@ -58,21 +58,20 @@ private:
 	bool keySPressed = false;
 	bool keyAPressed = false;
 	bool keyDPressed = false;
+
 	float bullet_timer = 0.0f;
 	float elapsed_ms = 0.0f;
 	float bullet_speed = 600.f;
 	float bullet_launch_interval = 0.39f;
+
 	int cutscene_stage = 0;
 	float cutscene_interval = 100.f;
+
 	// restart level
 	void restart_game();
 	void console_debug_fps();
 
 	MusicState game_music_state;
-
-	// Update Fps
-
-
 
 	// OpenGL window handle
 	GLFWwindow* window;
@@ -128,9 +127,6 @@ private:
 	Mix_Chunk* player_hurt;
 	Mix_Chunk* minion_hurt;
 	Mix_Chunk* minion_dead;
-
-	bool is_music_sped_up = false;
-
 
 	// fps variables
 	unsigned int fps = 0;
