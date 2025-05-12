@@ -70,15 +70,15 @@ enum class ChargerState {
 };
 
 enum class BossState {
-	Default,
-	Aiming,
-	Charging,
-	PowerUpSeeking,
-	Shooting,
+	DEFAULT,
+	AIMING,
+	CHARGING,
+	POWER_UP_SEEKING,
+	SHOOTING,
 };
 
 struct Boss {
-	BossState state = BossState::Default;
+	BossState state = BossState::DEFAULT;
 	BulletState bstate = BulletState::DEFAULT;
 	float aim_timer = 0;
 	float shoot_interval_ms = 20.0f;

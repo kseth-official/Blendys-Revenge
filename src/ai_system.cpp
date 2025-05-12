@@ -213,10 +213,10 @@ void AISystem::updateBoss(Entity bossEntity, vec2 chase_direction,
 
 
 	switch (boss.state) {
-	case BossState::Default: {
+	case BossState::DEFAULT: {
 		boss.is_shooting = true;
 		if (boss.rest_timer < 0) {
-			boss.state = BossState::Aiming;
+			boss.state = BossState::AIMING;
 			boss.aim_timer = BOSS_AIM_TIME;
 			break;
 		}
@@ -238,13 +238,13 @@ void AISystem::updateBoss(Entity bossEntity, vec2 chase_direction,
 		motion.velocity = target_direction * enemy.speed;
 		break;
 	}
-	case BossState::Aiming: {
+	case BossState::AIMING: {
 		boss.is_shooting = false;
 		motion.velocity = { 0, 0 };
 		boss.aim_timer -= elapsed_ms;
 		if (boss.aim_timer <= 0) {
 			boss.aim_timer = 0;
-			boss.state = BossState::Charging;
+			boss.state = BossState::CHARGING;
 			if (!registry.players.has(closestPowerUp)) {
 				auto& power = registry.motions.get(closestPowerUp);
 				vec2 goalPos = calculateInterceptPosition(power.position, motion.position, 1);
@@ -254,21 +254,21 @@ void AISystem::updateBoss(Entity bossEntity, vec2 chase_direction,
 		}
 		break;
 	}
-	case BossState::Charging: {
+	case BossState::CHARGING: {
 		boss.is_shooting = false;
 		motion.velocity = boss.charge_direction * BOSS_CHARGE_SPEED * enemy.speed;
 		boss.rest_timer += elapsed_ms * 2;
 		if (boss.rest_timer >= CHARGER_REST_TIME) {
 			boss.rest_timer = BOSS_REST_TIME;
-			boss.state = BossState::Default;
+			boss.state = BossState::DEFAULT;
 		}
 		break;
 	}
-	case BossState::Shooting: {
+	case BossState::SHOOTING: {
 		boss.is_shooting = true;
 		boss.powerup_duration_ms -= elapsed_ms;
 		if (boss.powerup_duration_ms < 0) {
-			boss.state = BossState::Default;
+			boss.state = BossState::DEFAULT;
 		}
 		motion.velocity = { 0, 0 };
 		break;
