@@ -2,21 +2,23 @@
 #include "world_init.hpp"
 #include <random>
 
-const int update_frequency = 50;
-const float ideal_range_from_player = 400.0f;
-const float approach_speed_factor = 1.0f;
-const float dodge_speed_factor = 1.5f;
 static int frame_count = 0;
-const float charger_aggro_range = 450.0f;
-const float charger_aim_time = 50.0f;
-const float charger_rest_time = 80.0f;
-const float charger_charge_speed = 4.0f;
-const float boss_charge_speed = 2.0f;
-const float boss_shoot_rage = 500.f;
-const float pick_up_range = 600.f;
-const float boss_aim_time = 40.0f;
-const float boss_rest_time = 150.0f;
-const float grape_bullet_speed = 400.f;
+
+// AI Configuration
+const int UPDATE_FREQUENCY = 50;
+const float IDEAL_RANGE_FROM_PLAYER = 400.0f;
+const float APPROACH_SPEED_FACTOR = 1.0f;
+const float DODGE_SPEED_FACTOR = 1.5f;
+const float CHARGER_AGGRO_RANGE = 450.0f;
+const float CHARGER_AIM_TIME = 50.0f;
+const float CHARGER_REST_TIME = 80.0f;
+const float CHARGER_CHARGE_SPEED = 4.0f;
+const float BOSS_CHARGE_SPEED = 2.0f;
+const float BOSS_SHOOT_RANGE = 500.f;
+const float PICK_UP_RANGE = 600.f;
+const float BOSS_AIM_TIME = 40.0f;
+const float BOSS_REST_TIME = 150.0f;
+const float GRAPE_BULLET_SPEED = 400.f;
 
 std::random_device rd;
 std::mt19937 gen(rd());
@@ -120,7 +122,7 @@ void shootGrapeBullets(RenderSystem* renderer, vec2 pos, vec2 velocity, float up
 			angle_diff -= 2 * M_PI;
 		}
 		float angle = i * angle_increment;
-		vec2 velocity = { cos(angle) * grape_bullet_speed, sin(angle) * grape_bullet_speed };
+		vec2 velocity = { cos(angle) * GRAPE_BULLET_SPEED, sin(angle) * GRAPE_BULLET_SPEED };
 		float final_angle = up_angle + angle_diff + angle;
 		create_enemy_bullet(renderer, pos, velocity, final_angle, 20, { 1,0,1 });
 	}
@@ -215,7 +217,7 @@ void AISystem::updateBoss(Entity bossEntity, vec2 chase_direction,
 		boss.is_shooting = true;
 		if (boss.rest_timer < 0) {
 			boss.state = BossState::Aiming;
-			boss.aim_timer = boss_aim_time;
+			boss.aim_timer = BOSS_AIM_TIME;
 			break;
 		}
 		boss.rest_timer -= elapsed_ms;
@@ -254,10 +256,10 @@ void AISystem::updateBoss(Entity bossEntity, vec2 chase_direction,
 	}
 	case BossState::Charging: {
 		boss.is_shooting = false;
-		motion.velocity = boss.charge_direction * boss_charge_speed * enemy.speed;
+		motion.velocity = boss.charge_direction * BOSS_CHARGE_SPEED * enemy.speed;
 		boss.rest_timer += elapsed_ms * 2;
-		if (boss.rest_timer >= charger_rest_time) {
-			boss.rest_timer = boss_rest_time;
+		if (boss.rest_timer >= CHARGER_REST_TIME) {
+			boss.rest_timer = BOSS_REST_TIME;
 			boss.state = BossState::Default;
 		}
 		break;
@@ -285,7 +287,7 @@ void AISystem::updateCleaner(Entity cleanerEntity, vec2 chase_direction,
 		auto& powerUpMotion = registry.motions.get(closestPowerUp);
 		vec2 directionToPowerUp = normalize(powerUpMotion.position - motion.position);
 
-		if (calculateDistance(motion.position, powerUpMotion.position) < pick_up_range) {
+		if (calculateDistance(motion.position, powerUpMotion.position) < PICK_UP_RANGE) {
 			motion.velocity = directionToPowerUp * enemy.speed;
 		}
 	}
@@ -360,7 +362,7 @@ void AISystem::updateSniper(Entity sniperEntity, vec2 chase_direction,
 		}
 		else if (distanceToPlayer >= avoidDistance && distanceToPlayer <= aimDistance) {
 			sniper.state = Sniper_State::Aiming;
-			sniper.aim_timer = charger_aim_time;
+			sniper.aim_timer = CHARGER_AIM_TIME;
 		}
 		else {
 			motion.velocity = chase_direction * enemy.speed;
@@ -411,9 +413,9 @@ void AISystem::updateCharger(Entity chargerEntity, vec2 chase_direction,
 
 	switch (charger.state) {
 	case Charger_State::Approaching:
-		if (distanceToPlayer <= charger_aggro_range) {
+		if (distanceToPlayer <= CHARGER_AGGRO_RANGE) {
 			charger.state = Charger_State::Aiming;
-			charger.aim_timer = charger_aim_time;
+			charger.aim_timer = CHARGER_AIM_TIME;
 		}
 		else {
 			motion.velocity = chase_direction * enemy.speed;
@@ -437,9 +439,9 @@ void AISystem::updateCharger(Entity chargerEntity, vec2 chase_direction,
 	}
 	break;
 	case Charger_State::Charging:
-		motion.velocity = charger.charge_direction * charger_charge_speed * enemy.speed;
+		motion.velocity = charger.charge_direction * CHARGER_CHARGE_SPEED * enemy.speed;
 		charger.rest_timer += elapsed_ms * 2;
-		if (charger.rest_timer >= charger_rest_time) {
+		if (charger.rest_timer >= CHARGER_REST_TIME) {
 			charger.rest_timer = 80;
 			charger.state = Charger_State::Resting;
 		}
@@ -481,7 +483,7 @@ void AISystem::init(RenderSystem* renderer_arg) {
 void AISystem::step(float elapsed_ms)
 {
 	frame_count++;
-	if (frame_count % update_frequency != 0) return;
+	if (frame_count % UPDATE_FREQUENCY != 0) return;
 
 	auto& motions_registry = registry.motions;
 	auto& player_registry = registry.players;
@@ -491,7 +493,7 @@ void AISystem::step(float elapsed_ms)
 	vec2 player_velocity = player_motion.velocity;
 
 
-	float prediction_time = update_frequency / 1000;
+	float prediction_time = UPDATE_FREQUENCY / 1000;
 	vec2 predicted_player_pos = player_position + player_velocity * prediction_time;
 
 
@@ -511,16 +513,16 @@ void AISystem::step(float elapsed_ms)
 			motion.velocity = direction * (original_speed);
 		}
 		else if (enemy.type == Enemy_TYPE::SHOOTER || enemy.type == Enemy_TYPE::SPLIT_SHOOTER) {
-			ShooterState state = decideShooterState(motion.position, predicted_player_pos, ideal_range_from_player);
+			ShooterState state = decideShooterState(motion.position, predicted_player_pos, IDEAL_RANGE_FROM_PLAYER);
 			switch (state) {
 			case ShooterState::Approach:
-				motion.velocity = chase_direction * (original_speed * approach_speed_factor);
+				motion.velocity = chase_direction * (original_speed * APPROACH_SPEED_FACTOR);
 				break;
 			case ShooterState::Dodge:
-				motion.velocity = -chase_direction * (original_speed * dodge_speed_factor);
+				motion.velocity = -chase_direction * (original_speed * DODGE_SPEED_FACTOR);
 				break;
 			}
-			shoot(enemy_enitiy, player_position, elapsed_ms * update_frequency);
+			shoot(enemy_enitiy, player_position, elapsed_ms * UPDATE_FREQUENCY);
 		}
 		else if (enemy.type == Enemy_TYPE::CHARGER) {
 			updateCharger(enemy_enitiy, chase_direction, enemy, motion, elapsed_ms, player_position);
@@ -538,6 +540,4 @@ void AISystem::step(float elapsed_ms)
 			updateBoss(enemy_enitiy, chase_direction, enemy, motion, elapsed_ms, player_position);
 		}
 	}
-
-
 }
