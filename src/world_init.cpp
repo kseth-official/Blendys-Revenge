@@ -396,7 +396,7 @@ Entity create_battery_powerup(RenderSystem* renderer, const vec2& position, cons
 	create_mesh(renderer, motion.position, motion.scale, 50.f, entity, TEXTURE_ASSET_ID::BATTERY_POWERUP, TEXTURE_ASSET_ID::TEXTURE_COUNT, GEOMETRY_BUFFER_ID::BATTERY, false);
 	// Create and (empty) powerup component to be able to refer to all minions
 	auto& powerup = registry.powerUps.emplace(entity);
-	powerup.type = POWERUP_TYPE::BATTERY;
+	powerup.type = PowerupType::BATTERY;
 	registry.renderRequests.insert(
 		entity,
 		{ TEXTURE_ASSET_ID::BATTERY_POWERUP,
@@ -428,7 +428,7 @@ Entity create_protein_powerup(RenderSystem* renderer, const vec2& position, cons
 
 	// Create and (empty) powerup component to be able to refer to all minions
 	auto& powerup = registry.powerUps.emplace(entity);
-	powerup.type = POWERUP_TYPE::PROTEIN;
+	powerup.type = PowerupType::PROTEIN;
 	registry.renderRequests.insert(
 		entity,
 		{ TEXTURE_ASSET_ID::PROTEIN_POWERUP,
@@ -460,7 +460,7 @@ Entity create_grape_powerup(RenderSystem* renderer, const vec2& position, const 
 
 	// Create and (empty) powerup component to be able to refer to all minions
 	auto& powerup = registry.powerUps.emplace(entity);
-	powerup.type = POWERUP_TYPE::GRAPE;
+	powerup.type = PowerupType::GRAPE;
 	registry.renderRequests.insert(
 		entity,
 		{ TEXTURE_ASSET_ID::GRAPE_POWERUP,
@@ -492,7 +492,7 @@ Entity create_lemon_powerup(RenderSystem* renderer, const vec2& position, const 
 
 	// Create and (empty) powerup component to be able to refer to all minions
 	auto& powerup = registry.powerUps.emplace(entity);
-	powerup.type = POWERUP_TYPE::LEMON;
+	powerup.type = PowerupType::LEMON;
 	registry.renderRequests.insert(
 		entity,
 		{ TEXTURE_ASSET_ID::LEMON_POWERUP,
@@ -522,7 +522,7 @@ Entity create_cherry_powerup(RenderSystem* renderer, const vec2& position, const
 	motion.scale = vec2({ -bounds.x, bounds.y });
 	// Create and (empty) powerup component to be able to refer to all minions
 	auto& powerup = registry.powerUps.emplace(entity);
-	powerup.type = POWERUP_TYPE::CHERRY;
+	powerup.type = PowerupType::CHERRY;
 
 	create_mesh(renderer, motion.position, motion.scale, motion.angle, entity, TEXTURE_ASSET_ID::LEMON_POWERUP, TEXTURE_ASSET_ID::TEXTURE_COUNT, GEOMETRY_BUFFER_ID::LEMON, false);
 
@@ -555,7 +555,7 @@ Entity create_shield_powerup(RenderSystem* renderer, const vec2& position, const
 	motion.scale = vec2({ -bounds.x, bounds.y });
 	// Create and (empty) powerup component to be able to refer to all minions
 	auto& powerup = registry.powerUps.emplace(entity);
-	powerup.type = POWERUP_TYPE::SHIELD;
+	powerup.type = PowerupType::SHIELD;
 	create_mesh(renderer, motion.position, motion.velocity, motion.scale, motion.angle, entity, TEXTURE_ASSET_ID::BATTERY_POWERUP, TEXTURE_ASSET_ID::BATTERY_POWERUP_NM, GEOMETRY_BUFFER_ID::BATTERY, false);
 
 	registry.renderRequests.insert(
@@ -587,7 +587,7 @@ Entity create_cactus_powerup(RenderSystem* renderer, const vec2& position, const
 	motion.scale = vec2({ -bounds.x, bounds.y });
 	// Create and (empty) powerup component to be able to refer to all minions
 	auto& powerup = registry.powerUps.emplace(entity);
-	powerup.type = POWERUP_TYPE::CACTUS;
+	powerup.type = PowerupType::CACTUS;
 	create_mesh(renderer, motion.position, motion.velocity, motion.scale, motion.angle, entity, TEXTURE_ASSET_ID::BATTERY_POWERUP, TEXTURE_ASSET_ID::BATTERY_POWERUP_NM, GEOMETRY_BUFFER_ID::BATTERY, false);
 
 	registry.renderRequests.insert(
@@ -716,7 +716,7 @@ Entity create_dodger(RenderSystem* renderer, const vec2& position, const vec2& b
 	//registry.meshPtrs.emplace(entity, &mesh);
 	auto& motion = registry.motions.emplace(entity);
 	auto& minion = registry.minions.emplace(entity);
-	minion.type = Enemy_TYPE::SHOOTER;
+	minion.type = EnemyType::SHOOTER;
 	minion.score = 25;
 	motion.angle = 0.f;
 	motion.velocity = { 0, 0.f };
@@ -746,7 +746,7 @@ Entity create_split_shooter(RenderSystem* renderer, const vec2& position, const 
 	registry.mesh_collision.emplace(entity);
 	auto& motion = registry.motions.emplace(entity);
 	auto& minion = registry.minions.emplace(entity);
-	minion.type = Enemy_TYPE::SPLIT_SHOOTER;
+	minion.type = EnemyType::SPLIT_SHOOTER;
 	minion.score = 40;
 	motion.angle = 0.f;
 	motion.velocity = { 0, 0.f };
@@ -775,7 +775,7 @@ Entity create_charger(RenderSystem* renderer, const vec2& position, const vec2& 
 	//registry.meshPtrs.emplace(entity, &mesh);
 	auto& motion = registry.motions.emplace(entity);
 	auto& minion = registry.minions.emplace(entity);
-	minion.type = Enemy_TYPE::CHARGER;
+	minion.type = EnemyType::CHARGER;
 	minion.score = 40;
 	motion.angle = 0.f;
 	minion.health = 40;
@@ -811,7 +811,7 @@ Entity create_boss(RenderSystem* renderer, const vec2& position, const vec2& bou
 	auto& cleaner = registry.cleaners.emplace(entity);
 
 	auto& boss = registry.boss.emplace(entity);
-	minion.type = Enemy_TYPE::BOSS;
+	minion.type = EnemyType::BOSS;
 	minion.score = 10000;
 	motion.angle = 0.f;
 	minion.damage = 1000;
@@ -846,7 +846,7 @@ Entity create_tank(RenderSystem* renderer, const vec2& position, const vec2& bou
 	//registry.meshPtrs.emplace(entity, &mesh);
 	auto& motion = registry.motions.emplace(entity);
 	auto& minion = registry.minions.emplace(entity);
-	minion.type = Enemy_TYPE::TANK;
+	minion.type = EnemyType::TANK;
 	minion.score = 80;
 	minion.armor = 20;
 	motion.angle = 0.f;
@@ -879,7 +879,7 @@ Entity create_sniper(RenderSystem* renderer, const vec2& position, const vec2& b
 	//registry.meshPtrs.emplace(entity, &mesh);
 	auto& motion = registry.motions.emplace(entity);
 	auto& minion = registry.minions.emplace(entity);
-	minion.type = Enemy_TYPE::SNIPER;
+	minion.type = EnemyType::SNIPER;
 	minion.score = 50;
 	motion.angle = 0.f;
 	motion.velocity = { 0, 0.f };
@@ -915,7 +915,7 @@ Entity create_roamer(RenderSystem* renderer, const vec2& position, const vec2& b
 	//registry.meshPtrs.emplace(entity, &mesh);
 	auto& motion = registry.motions.emplace(entity);
 	auto& minion = registry.minions.emplace(entity);
-	minion.type = Enemy_TYPE::ROAMER;
+	minion.type = EnemyType::ROAMER;
 	minion.score = 30;
 	minion.speed = 100;
 	motion.angle = 0.f;
@@ -959,7 +959,7 @@ Entity create_cleaner(RenderSystem* renderer, const vec2& position, const vec2& 
 	registry.meshPtrs.emplace(entity, &mesh);
 	auto& motion = registry.motions.emplace(entity);
 	auto& minion = registry.minions.emplace(entity);
-	minion.type = Enemy_TYPE::CLEANER;
+	minion.type = EnemyType::CLEANER;
 	minion.score = 50;
 	minion.health = 150;
 	minion.speed = 70;

@@ -160,7 +160,7 @@ private:
 	void update_player_movement();
 	void move_player(vec2 direction);
 	void get_blendy_render_request(bool up, bool down, bool left, bool right, int stage);
-	void get_minion_render_request(bool up, bool down, bool right, bool left, int stage, Enemy_TYPE type, Entity minion);
+	void get_minion_render_request(bool up, bool down, bool right, bool left, int stage, EnemyType type, Entity minion);
 	float get_y_animate(int stage, int going_up, Entity entity);
 	void update_fps(float elapsed_ms_since_last_update);
 	void update_score();

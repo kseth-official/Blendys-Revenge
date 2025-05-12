@@ -16,7 +16,7 @@ enum class EntityType {
 	ALL
 };
 
-enum class POWERUP_TYPE {
+enum class PowerupType {
 
 	BATTERY = 0,
 	PROTEIN = BATTERY + 1,
@@ -27,7 +27,7 @@ enum class POWERUP_TYPE {
 	SHIELD = CACTUS + 1,
 };
 
-enum class Bullet_State {
+enum class BulletState {
 	Default = 0,
 	Protein = Default+ 1,
 	Grape = Protein +1,
@@ -36,19 +36,19 @@ enum class Bullet_State {
 	Cactus = Cherry +1,
 };
 
-enum class Sniper_State {
+enum class SniperState {
 	Avoiding,
 	Aiming,
 	Shooting,
 	Reloading
 };
 
-enum class Tank_state {
+enum class TankState {
 	defualt,
 	protecting,
 };
 
-enum class Enemy_TYPE {
+enum class EnemyType {
 	BASIC = 0,
 	SHOOTER = BASIC + 1,
 	ROAMER = SHOOTER + 1,
@@ -62,7 +62,7 @@ enum class Enemy_TYPE {
 	BOSS = SPLIT_SHOOTER + 1,
 };
 
-enum class Charger_State {
+enum class ChargerState {
 	Approaching = 0,
 	Aiming = Approaching + 1,
 	Charging = Aiming +1,
@@ -79,7 +79,7 @@ enum class BossState {
 
 struct Boss {
 	BossState state = BossState::Default;
-	Bullet_State bstate = Bullet_State::Default;
+	BulletState bstate = BulletState::Default;
 	float aim_timer = 0;
 	float shoot_interval_ms = 20.0f;
 	float time_since_last_shot_ms = 0.0f;
@@ -184,7 +184,7 @@ struct Roamer {
 };
 
 struct Charger {
-	Charger_State state = Charger_State::Approaching;
+	ChargerState state = ChargerState::Approaching;
 	float aim_timer = 0;
 	vec2 charge_direction;
 	float rest_timer = 0;
@@ -199,7 +199,7 @@ struct Giant {
 };
 
 struct Tank {
-	Tank_state state = Tank_state::defualt;
+	TankState state = TankState::defualt;
 };
 
 struct Protection {
@@ -207,7 +207,7 @@ struct Protection {
 };
 
 struct Sniper {
-	Sniper_State state = Sniper_State::Avoiding;
+	SniperState state = SniperState::Avoiding;
 	float aim_timer = 100.f;
 };
 
@@ -228,7 +228,7 @@ struct Mesh_collision
 
 struct PowerUp
 {
-	POWERUP_TYPE type;
+	PowerupType type;
 	float duration_ms = 0.0f;
 	int count = 0;
 };
@@ -247,7 +247,7 @@ struct Minion
 	bool down;
 	bool left;
 	bool right;
-	Enemy_TYPE type = Enemy_TYPE::BASIC;
+	EnemyType type = EnemyType::BASIC;
 };
 
 struct Shooter {

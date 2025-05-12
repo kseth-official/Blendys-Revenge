@@ -634,14 +634,14 @@ void WorldSystem::update_boss_animation(float elapsed_ms_since_last_update) {
 		}
 		else {
 			registry.renderRequests.remove(boss);
-			get_minion_render_request(boss_minion.up, boss_minion.down, boss_minion.right, boss_minion.left, boss_minion.frame_stage,Enemy_TYPE::BOSS,boss);
+			get_minion_render_request(boss_minion.up, boss_minion.down, boss_minion.right, boss_minion.left, boss_minion.frame_stage,EnemyType::BOSS,boss);
 		}
 		final_boss.going_up = 1;
 		boss_motion.y_animate = 0.f;
 	}
 	else {
 		registry.renderRequests.remove(boss);
-		get_minion_render_request(boss_minion.up, boss_minion.down, boss_minion.right, boss_minion.left, boss_minion.frame_stage, Enemy_TYPE::BOSS, boss);
+		get_minion_render_request(boss_minion.up, boss_minion.down, boss_minion.right, boss_minion.left, boss_minion.frame_stage, EnemyType::BOSS, boss);
 		boss_motion.y_animate = get_y_animate(boss_minion.frame_stage, final_boss.going_up,boss);
 	}
 
@@ -653,7 +653,7 @@ void WorldSystem::update_minion_animation(float elapsed_ms_since_last_update) {
 
 		Minion& minion = registry.minions.get(registry.minions.entities[j]);
 		Motion& minion_motion = registry.motions.get(registry.minions.entities[j]);
-		if (minion.type == Enemy_TYPE::BOSS)
+		if (minion.type == EnemyType::BOSS)
 			continue;
 		// get what the render request status should be
 		// if minion is not moving, render original image
@@ -1088,39 +1088,39 @@ void WorldSystem::handle_collisions() {
 			else if (registry.powerUps.has(entity_other)) {
 				PowerUp powerup = registry.powerUps.get(entity_other);
 				auto& blendy = registry.players.get(player_blendy);
-				if (powerup.type == POWERUP_TYPE::BATTERY) {
+				if (powerup.type == PowerupType::BATTERY) {
 					blendy.health = blendy.max_health;
 					update_health_bar();
 					Mix_PlayChannel(-1, powerup_pickup_battery, 0);
 					registry.remove_all_components_of(registry.Entity_Mesh_Entity.get(entity_other));
 					registry.remove_all_components_of(entity_other);
 				}
-				else if (powerup.type == POWERUP_TYPE::PROTEIN) {
+				else if (powerup.type == PowerupType::PROTEIN) {
 					blendy.protein_powerup_duration_ms = 2500.f;
 					registry.remove_all_components_of(entity_other);
 				}
-				else if (powerup.type == POWERUP_TYPE::GRAPE) {
+				else if (powerup.type == PowerupType::GRAPE) {
 					blendy.pattern_type = 1;
 					blendy.pattern_powerup_duration_ms = 300.f;
 					registry.remove_all_components_of(entity_other);
 				}
-				else if (powerup.type == POWERUP_TYPE::LEMON) {
+				else if (powerup.type == PowerupType::LEMON) {
 					blendy.bullet_type = 1;
 					blendy.bullet_powerup_duration_ms = 300.f;
 					registry.remove_all_components_of(entity_other);
 				}
-				else if (powerup.type == POWERUP_TYPE::CHERRY) {
+				else if (powerup.type == PowerupType::CHERRY) {
 					blendy.pattern_type = 2;	
 					blendy.pattern_powerup_duration_ms = 300.f;
 					registry.remove_all_components_of(entity_other);
 				}
-				else if (powerup.type == POWERUP_TYPE::CACTUS) {
+				else if (powerup.type == PowerupType::CACTUS) {
 					blendy.bullet_type = 2;
 					blendy.bullet_powerup_duration_ms = 300.f;
 					registry.remove_all_components_of(entity_other);
 					
 				}
-				else if (powerup.type == POWERUP_TYPE::SHIELD) {
+				else if (powerup.type == PowerupType::SHIELD) {
 					if (blendy.shield < blendy.max_shield) {
 						blendy.shield += 1;
 						update_health_bar();
@@ -1143,34 +1143,34 @@ void WorldSystem::handle_collisions() {
 					Boss& boss = registry.boss.get(entity);
 					Minion& m = registry.minions.get(entity);
 					switch (powerup.type) {
-					case POWERUP_TYPE::BATTERY:
+					case PowerupType::BATTERY:
 						m.health += 200;
 						if (m.health > m.max_health) m.health = m.max_health;
 						break;
-					case POWERUP_TYPE::SHIELD:
+					case PowerupType::SHIELD:
 						m.health += 800;
 						if (m.health > m.max_health) m.health = m.max_health;
 						break;
-					case POWERUP_TYPE::LEMON:
-						boss.bstate = static_cast<Bullet_State>((int)powerup.type);
+					case PowerupType::LEMON:
+						boss.bstate = static_cast<BulletState>((int)powerup.type);
 						boss.powerup_duration_ms = 100;
 						break;
-					case POWERUP_TYPE::CHERRY:
-						boss.bstate = static_cast<Bullet_State>((int)powerup.type);
+					case PowerupType::CHERRY:
+						boss.bstate = static_cast<BulletState>((int)powerup.type);
 						boss.powerup_duration_ms = 100;
 						break;
-					case POWERUP_TYPE::GRAPE:
-						boss.bstate = static_cast<Bullet_State>((int)powerup.type);
+					case PowerupType::GRAPE:
+						boss.bstate = static_cast<BulletState>((int)powerup.type);
 						boss.state = BossState::Shooting;
 						boss.powerup_duration_ms = 300;
 						break;
-					case POWERUP_TYPE::	PROTEIN:
-						boss.bstate = static_cast<Bullet_State>((int)powerup.type);
+					case PowerupType::	PROTEIN:
+						boss.bstate = static_cast<BulletState>((int)powerup.type);
 						boss.state = BossState::Shooting;
 						boss.powerup_duration_ms = 130;
 						break;
-					case POWERUP_TYPE::CACTUS:
-						boss.bstate = static_cast<Bullet_State>((int)powerup.type);
+					case PowerupType::CACTUS:
+						boss.bstate = static_cast<BulletState>((int)powerup.type);
 						boss.state = BossState::Shooting;
 						boss.powerup_duration_ms = 200;
 						break;
@@ -1691,19 +1691,19 @@ void WorldSystem::get_blendy_render_request(bool up, bool down, bool right, bool
 	}
 }
 
-void WorldSystem::get_minion_render_request(bool up, bool down, bool right, bool left, int stage, Enemy_TYPE type,Entity minion) {
-	if (type == Enemy_TYPE::HEALER || type == Enemy_TYPE::ROAMER || type == Enemy_TYPE::SHOOTER || type == Enemy_TYPE::SNIPER) {
+void WorldSystem::get_minion_render_request(bool up, bool down, bool right, bool left, int stage, EnemyType type,Entity minion) {
+	if (type == EnemyType::HEALER || type == EnemyType::ROAMER || type == EnemyType::SHOOTER || type == EnemyType::SNIPER) {
 		TEXTURE_ASSET_ID texture = TEXTURE_ASSET_ID::HEALER_D0; // healer, roamer,shooter,sniper
-		if (type == Enemy_TYPE::HEALER) {
+		if (type == EnemyType::HEALER) {
 			texture = static_cast<TEXTURE_ASSET_ID>(static_cast<int>(texture) + 0);
 		}
-		else if (type == Enemy_TYPE::ROAMER) {
+		else if (type == EnemyType::ROAMER) {
 			texture = static_cast<TEXTURE_ASSET_ID>(static_cast<int>(texture) + 24);
 		}
-		else if (type == Enemy_TYPE::SHOOTER) {
+		else if (type == EnemyType::SHOOTER) {
 			texture = static_cast<TEXTURE_ASSET_ID>(static_cast<int>(texture) + 48);
 		}
-		else if (type == Enemy_TYPE::SNIPER) {
+		else if (type == EnemyType::SNIPER) {
 			texture = static_cast<TEXTURE_ASSET_ID>(static_cast<int>(texture) + 72);
 		}
 		// down, left, right, up
@@ -1737,7 +1737,7 @@ void WorldSystem::get_minion_render_request(bool up, bool down, bool right, bool
 			 GEOMETRY_BUFFER_ID::SPRITE });
 		return;
 	}
-	if (type == Enemy_TYPE::BOSS) {
+	if (type == EnemyType::BOSS) {
 		TEXTURE_ASSET_ID texture = TEXTURE_ASSET_ID::BOSS_D0;
 		if (down && left) {
 			texture = static_cast<TEXTURE_ASSET_ID>(static_cast<int>(texture) + 32);
