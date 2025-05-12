@@ -1,10 +1,10 @@
 #pragma once
 
-#include <vector>
-
 #include "tiny_ecs_registry.hpp"
 #include "common.hpp"
 #include "world_init.hpp"
+
+#include <vector>
 
 enum class ShooterState {
 	APPROACH,
@@ -25,6 +25,7 @@ private:
 	void updateTank(Entity sniperEntity, vec2 chase_direction, Minion& enemy, Motion& motion, float elapsed_ms, vec2 player_pos);
 	void updateCleaner(Entity cleanerEntity, vec2 chase_direction, Minion& enemy, Motion& motion, float elapsed_ms);
 	void updateBoss(Entity bossEntity, vec2 chase_direction, Minion& enemy, Motion& motion, float elapsed_ms, vec2 player_pos);
+
 	Entity findClosestPowerUp(vec2 cleanerPos);
 	Entity findClosestSniper(vec2 player_pos);
 
