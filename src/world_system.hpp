@@ -58,21 +58,20 @@ private:
 	bool keySPressed = false;
 	bool keyAPressed = false;
 	bool keyDPressed = false;
+
 	float bullet_timer = 0.0f;
 	float elapsed_ms = 0.0f;
 	float bullet_speed = 600.f;
 	float bullet_launch_interval = 0.39f;
+
 	int cutscene_stage = 0;
 	float cutscene_interval = 100.f;
+
 	// restart level
 	void restart_game();
 	void console_debug_fps();
 
 	MusicState game_music_state;
-
-	// Update Fps
-
-
 
 	// OpenGL window handle
 	GLFWwindow* window;
@@ -129,9 +128,6 @@ private:
 	Mix_Chunk* minion_hurt;
 	Mix_Chunk* minion_dead;
 
-	bool is_music_sped_up = false;
-
-
 	// fps variables
 	unsigned int fps = 0;
 	unsigned int frame_count = 0;
@@ -160,7 +156,7 @@ private:
 	void update_player_movement();
 	void move_player(vec2 direction);
 	void get_blendy_render_request(bool up, bool down, bool left, bool right, int stage);
-	void get_minion_render_request(bool up, bool down, bool right, bool left, int stage, Enemy_TYPE type, Entity minion);
+	void get_minion_render_request(bool up, bool down, bool right, bool left, int stage, EnemyType type, Entity minion);
 	float get_y_animate(int stage, int going_up, Entity entity);
 	void update_fps(float elapsed_ms_since_last_update);
 	void update_score();

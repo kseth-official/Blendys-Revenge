@@ -7,7 +7,9 @@
 #include <map>
 
 struct Mesh;
+
 enum class GEOMETRY_BUFFER_ID;
+
 enum class EntityType {
 	Generic,
 	Player,
@@ -16,7 +18,7 @@ enum class EntityType {
 	ALL
 };
 
-enum class POWERUP_TYPE {
+enum class PowerupType {
 
 	BATTERY = 0,
 	PROTEIN = BATTERY + 1,
@@ -27,28 +29,28 @@ enum class POWERUP_TYPE {
 	SHIELD = CACTUS + 1,
 };
 
-enum class Bullet_State {
-	Default = 0,
-	Protein = Default+ 1,
-	Grape = Protein +1,
-	Lemon = Grape + 1,
-	Cherry = Lemon + 1,
-	Cactus = Cherry +1,
+enum class BulletState {
+	DEFAULT = 0,
+	PROTEIN = DEFAULT+ 1,
+	GRAPE = PROTEIN +1,
+	LEMON = GRAPE + 1,
+	CHERRY = LEMON + 1,
+	CACTUS = CHERRY +1,
 };
 
-enum class Sniper_State {
-	Avoiding,
-	Aiming,
-	Shooting,
-	Reloading
+enum class SniperState {
+	AVOIDING,
+	AIMING,
+	SHOOTING,
+	RELOADING
 };
 
-enum class Tank_state {
-	defualt,
-	protecting,
+enum class TankState {
+	DEFAULT,
+	PROTECTING,
 };
 
-enum class Enemy_TYPE {
+enum class EnemyType {
 	BASIC = 0,
 	SHOOTER = BASIC + 1,
 	ROAMER = SHOOTER + 1,
@@ -62,24 +64,24 @@ enum class Enemy_TYPE {
 	BOSS = SPLIT_SHOOTER + 1,
 };
 
-enum class Charger_State {
-	Approaching = 0,
-	Aiming = Approaching + 1,
-	Charging = Aiming +1,
-	Resting = Charging + 1,
+enum class ChargerState {
+	APPROACHING = 0,
+	AIMING = APPROACHING + 1,
+	CHARGING = AIMING +1,
+	RESTING = CHARGING + 1,
 };
 
 enum class BossState {
-	Default,
-	Aiming,
-	Charging,
-	PowerUpSeeking,
-	Shooting,
+	DEFAULT,
+	AIMING,
+	CHARGING,
+	POWER_UP_SEEKING,
+	SHOOTING,
 };
 
 struct Boss {
-	BossState state = BossState::Default;
-	Bullet_State bstate = Bullet_State::Default;
+	BossState state = BossState::DEFAULT;
+	BulletState bstate = BulletState::DEFAULT;
 	float aim_timer = 0;
 	float shoot_interval_ms = 20.0f;
 	float time_since_last_shot_ms = 0.0f;
@@ -117,12 +119,11 @@ struct Cursor {
 };
 
 enum class Direction {
-	Up,
-	Down,
-	Left,
-	Right
+	UP,
+	DOWN,
+	LEFT,
+	RIGHT
 };
-// Player component
 
 struct Player {
 	float max_speed = 310.f;
@@ -146,45 +147,43 @@ struct Player {
 	int going_up = -1;
 	float invisible_counter = 0.0f;
 	float max_invisible_duration = 100.f;
-	std::map<Direction, Mesh> meshes;
+	std::unordered_map<Direction, Mesh> meshes;
 
+	// Kush: Was this to configure direction-based meshes for Blendy?
 	//static const std::map<Direction, std::string> direction_mesh;
-
-
 };
 
 static const std::map<Direction, std::string> blendy_direction_mesh = {
-	{Direction::Up, mesh_path("Blendy-up.obj")},
-	{Direction::Down, mesh_path("Blendy-Reduced.obj")},
-	{Direction::Left, mesh_path("Blendy-left.obj")},
-	{Direction::Right, mesh_path("Blendy-right.obj")}
+	{Direction::UP, mesh_path("Blendy-up.obj")},
+	{Direction::DOWN, mesh_path("Blendy-Reduced.obj")},
+	{Direction::LEFT, mesh_path("Blendy-left.obj")},
+	{Direction::RIGHT, mesh_path("Blendy-right.obj")}
 };
 
 static const std::map<Direction, std::string> minion_direction_mesh = {
-	{Direction::Up, mesh_path("Minion-Reduced.obj")},
-	{Direction::Down, mesh_path("Minion-Reduced.obj")},
-	{Direction::Left, mesh_path("minion-left.obj")},
-	{Direction::Right, mesh_path("minion-right.obj")}
+	{Direction::UP, mesh_path("Minion-Reduced.obj")},
+	{Direction::DOWN, mesh_path("Minion-Reduced.obj")},
+	{Direction::LEFT, mesh_path("minion-left.obj")},
+	{Direction::RIGHT, mesh_path("minion-right.obj")}
 };
 
 static const std::map<Direction, std::string> boss_direction_mesh = {
-	{Direction::Up, mesh_path("boss_up.obj")},
-	{Direction::Down, mesh_path("boss_down.obj")},
-	{Direction::Left, mesh_path("boss_left.obj")},
-	{Direction::Right, mesh_path("boss_right.obj")}
+	{Direction::UP, mesh_path("boss_up.obj")},
+	{Direction::DOWN, mesh_path("boss_down.obj")},
+	{Direction::LEFT, mesh_path("boss_left.obj")},
+	{Direction::RIGHT, mesh_path("boss_right.obj")}
 };
-
-
 
 struct Mesh_entity {
 
 };
+
 struct Roamer {
 
 };
 
 struct Charger {
-	Charger_State state = Charger_State::Approaching;
+	ChargerState state = ChargerState::APPROACHING;
 	float aim_timer = 0;
 	vec2 charge_direction;
 	float rest_timer = 0;
@@ -199,7 +198,7 @@ struct Giant {
 };
 
 struct Tank {
-	Tank_state state = Tank_state::defualt;
+	TankState state = TankState::DEFAULT;
 };
 
 struct Protection {
@@ -207,10 +206,9 @@ struct Protection {
 };
 
 struct Sniper {
-	Sniper_State state = Sniper_State::Avoiding;
+	SniperState state = SniperState::AVOIDING;
 	float aim_timer = 100.f;
 };
-
 
 struct Panel {
 
@@ -228,7 +226,7 @@ struct Mesh_collision
 
 struct PowerUp
 {
-	POWERUP_TYPE type;
+	PowerupType type;
 	float duration_ms = 0.0f;
 	int count = 0;
 };
@@ -247,7 +245,7 @@ struct Minion
 	bool down;
 	bool left;
 	bool right;
-	Enemy_TYPE type = Enemy_TYPE::BASIC;
+	EnemyType type = EnemyType::BASIC;
 };
 
 struct Shooter {
@@ -261,8 +259,6 @@ struct Bullet
 	int penetration = 1;
 	int damage = 25;
 };
-
-
 
 struct Eatable
 {
@@ -401,7 +397,6 @@ struct ParticleEmitter
 	float particle_size;
 };
 
-
 // LightSource component for entities that represent a LightSource
 struct LightSource
 {
@@ -420,10 +415,11 @@ struct LightSource
 	vec3 camera_position;
 };
 
-struct box {
+struct Box {
 	vec2 center;
 	vec2 scale;
 };
+
 /**
  * The following enumerators represent global identifiers refering to graphic
  * assets. For example TEXTURE_ASSET_ID are the identifiers of each texture
@@ -447,7 +443,6 @@ struct box {
  * The final value in each enumeration is both a way to keep track of how many
  * enums there are, and as a default value to represent uninitialized fields.
  */
-//
 enum class TEXTURE_ASSET_ID {
 	BLENDY = 0,
 	BLENDY_NM = BLENDY + 1,

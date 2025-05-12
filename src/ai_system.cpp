@@ -2,21 +2,23 @@
 #include "world_init.hpp"
 #include <random>
 
-const int update_frequency = 50;
-const float ideal_range_from_player = 400.0f;
-const float approach_speed_factor = 1.0f;
-const float dodge_speed_factor = 1.5f;
 static int frame_count = 0;
-const float charger_aggro_range = 450.0f;
-const float charger_aim_time = 50.0f;
-const float charger_rest_time = 80.0f;
-const float charger_charge_speed = 4.0f;
-const float boss_charge_speed = 2.0f;
-const float boss_shoot_rage = 500.f;
-const float pick_up_range = 600.f;
-const float boss_aim_time = 40.0f;
-const float boss_rest_time = 150.0f;
-const float grape_bullet_speed = 400.f;
+
+// AI Configuration
+const int UPDATE_FREQUENCY = 50;
+const float IDEAL_RANGE_FROM_PLAYER = 400.0f;
+const float APPROACH_SPEED_FACTOR = 1.0f;
+const float DODGE_SPEED_FACTOR = 1.5f;
+const float CHARGER_AGGRO_RANGE = 450.0f;
+const float CHARGER_AIM_TIME = 50.0f;
+const float CHARGER_REST_TIME = 80.0f;
+const float CHARGER_CHARGE_SPEED = 4.0f;
+const float BOSS_CHARGE_SPEED = 2.0f;
+const float BOSS_SHOOT_RANGE = 500.f;
+const float PICK_UP_RANGE = 600.f;
+const float BOSS_AIM_TIME = 40.0f;
+const float BOSS_REST_TIME = 150.0f;
+const float GRAPE_BULLET_SPEED = 400.f;
 
 std::random_device rd;
 std::mt19937 gen(rd());
@@ -120,7 +122,7 @@ void shootGrapeBullets(RenderSystem* renderer, vec2 pos, vec2 velocity, float up
 			angle_diff -= 2 * M_PI;
 		}
 		float angle = i * angle_increment;
-		vec2 velocity = { cos(angle) * grape_bullet_speed, sin(angle) * grape_bullet_speed };
+		vec2 velocity = { cos(angle) * GRAPE_BULLET_SPEED, sin(angle) * GRAPE_BULLET_SPEED };
 		float final_angle = up_angle + angle_diff + angle;
 		create_enemy_bullet(renderer, pos, velocity, final_angle, 20, { 1,0,1 });
 	}
@@ -148,14 +150,14 @@ void AISystem::boss_shoot(Boss& boss, Motion& motion, const vec2& player_pos, fl
 	boss.powerup_duration_ms -= elapsed_ms;
 
 	switch (boss.bstate) {
-	case Bullet_State::Default: {
+	case BulletState::DEFAULT: {
 		if (boss.time_since_last_shot_ms >= boss.shoot_interval_ms) {
 			create_enemy_bullet(renderer, motion.position, bullet_direction * 320.0f, angle_diff, 25, { 1,0.5,0 });
 			boss.time_since_last_shot_ms = 0;
 		}
 		return;
 	}
-	case Bullet_State::Grape: {
+	case BulletState::GRAPE: {
 		if (boss.time_since_last_shot_ms >= boss.shoot_interval_ms) {
 			angle_diff = -3.02989;
 			shootGrapeBullets(renderer, motion.position, bullet_direction, up_angle, angle_diff);
@@ -163,7 +165,7 @@ void AISystem::boss_shoot(Boss& boss, Motion& motion, const vec2& player_pos, fl
 		}
 		break;
 	}
-	case Bullet_State::Cactus: {
+	case BulletState::CACTUS: {
 		if (boss.time_since_last_shot_ms >= boss.shoot_interval_ms * 1.5) {
 			//todo:change_shape
 			create_enemy_bullet(renderer, motion.position, bullet_direction * 580.0f, angle_diff, 25, { 1,0,0 });
@@ -171,7 +173,7 @@ void AISystem::boss_shoot(Boss& boss, Motion& motion, const vec2& player_pos, fl
 		}
 		break;
 	}
-	case Bullet_State::Cherry: {
+	case BulletState::CHERRY: {
 		if (boss.time_since_last_shot_ms >= boss.shoot_interval_ms * 2) {
 			vec2 side_direction = vec2(-bullet_direction.y, bullet_direction.x);
 			create_enemy_bullet(renderer, motion.position, (bullet_direction + side_direction * 0.3f) * 320.0f, angle_diff, 15, { 1,0.5,0 });
@@ -181,14 +183,14 @@ void AISystem::boss_shoot(Boss& boss, Motion& motion, const vec2& player_pos, fl
 		}
 		break;
 	}
-	case Bullet_State::Protein: {
+	case BulletState::PROTEIN: {
 		if (boss.time_since_last_shot_ms >= boss.shoot_interval_ms / 4) {
 			create_enemy_bullet(renderer, motion.position, bullet_direction * 290.0f, angle_diff, 10, { 1,0.5,0 });
 			boss.time_since_last_shot_ms = 0;
 		}
 		break;
 	}
-	case Bullet_State::Lemon: {
+	case BulletState::LEMON: {
 		if (boss.time_since_last_shot_ms >= boss.shoot_interval_ms / 2) {
 			create_enemy_bullet(renderer, motion.position, bullet_direction * 320.f, angle_diff, 50, { 0.5,1,0 });
 			boss.time_since_last_shot_ms = 0;
@@ -197,7 +199,7 @@ void AISystem::boss_shoot(Boss& boss, Motion& motion, const vec2& player_pos, fl
 	}
 	}
 
-	if (boss.powerup_duration_ms < 0) boss.bstate = Bullet_State::Default;
+	if (boss.powerup_duration_ms < 0) boss.bstate = BulletState::DEFAULT;
 }
 
 
@@ -211,11 +213,11 @@ void AISystem::updateBoss(Entity bossEntity, vec2 chase_direction,
 
 
 	switch (boss.state) {
-	case BossState::Default: {
+	case BossState::DEFAULT: {
 		boss.is_shooting = true;
 		if (boss.rest_timer < 0) {
-			boss.state = BossState::Aiming;
-			boss.aim_timer = boss_aim_time;
+			boss.state = BossState::AIMING;
+			boss.aim_timer = BOSS_AIM_TIME;
 			break;
 		}
 		boss.rest_timer -= elapsed_ms;
@@ -236,13 +238,13 @@ void AISystem::updateBoss(Entity bossEntity, vec2 chase_direction,
 		motion.velocity = target_direction * enemy.speed;
 		break;
 	}
-	case BossState::Aiming: {
+	case BossState::AIMING: {
 		boss.is_shooting = false;
 		motion.velocity = { 0, 0 };
 		boss.aim_timer -= elapsed_ms;
 		if (boss.aim_timer <= 0) {
 			boss.aim_timer = 0;
-			boss.state = BossState::Charging;
+			boss.state = BossState::CHARGING;
 			if (!registry.players.has(closestPowerUp)) {
 				auto& power = registry.motions.get(closestPowerUp);
 				vec2 goalPos = calculateInterceptPosition(power.position, motion.position, 1);
@@ -252,21 +254,21 @@ void AISystem::updateBoss(Entity bossEntity, vec2 chase_direction,
 		}
 		break;
 	}
-	case BossState::Charging: {
+	case BossState::CHARGING: {
 		boss.is_shooting = false;
-		motion.velocity = boss.charge_direction * boss_charge_speed * enemy.speed;
+		motion.velocity = boss.charge_direction * BOSS_CHARGE_SPEED * enemy.speed;
 		boss.rest_timer += elapsed_ms * 2;
-		if (boss.rest_timer >= charger_rest_time) {
-			boss.rest_timer = boss_rest_time;
-			boss.state = BossState::Default;
+		if (boss.rest_timer >= CHARGER_REST_TIME) {
+			boss.rest_timer = BOSS_REST_TIME;
+			boss.state = BossState::DEFAULT;
 		}
 		break;
 	}
-	case BossState::Shooting: {
+	case BossState::SHOOTING: {
 		boss.is_shooting = true;
 		boss.powerup_duration_ms -= elapsed_ms;
 		if (boss.powerup_duration_ms < 0) {
-			boss.state = BossState::Default;
+			boss.state = BossState::DEFAULT;
 		}
 		motion.velocity = { 0, 0 };
 		break;
@@ -285,7 +287,7 @@ void AISystem::updateCleaner(Entity cleanerEntity, vec2 chase_direction,
 		auto& powerUpMotion = registry.motions.get(closestPowerUp);
 		vec2 directionToPowerUp = normalize(powerUpMotion.position - motion.position);
 
-		if (calculateDistance(motion.position, powerUpMotion.position) < pick_up_range) {
+		if (calculateDistance(motion.position, powerUpMotion.position) < PICK_UP_RANGE) {
 			motion.velocity = directionToPowerUp * enemy.speed;
 		}
 	}
@@ -301,7 +303,7 @@ void AISystem::updateTank(Entity tankEntity, vec2 chase_direction,
 	float distanceToPlayer = calculateDistance(motion.position, player_pos);
 
 	switch (tank.state) {
-	case Tank_state::defualt: {
+	case TankState::DEFAULT: {
 		if (registry.snipers.entities.size() != 0) {
 			Entity closestSniper = findClosestSniper(motion.position);
 			if (!registry.players.has(closestSniper)) {
@@ -309,17 +311,17 @@ void AISystem::updateTank(Entity tankEntity, vec2 chase_direction,
 				sniper_protect.link = tankEntity;
 				auto& tank_protect = registry.protections.emplace(tankEntity);
 				tank_protect.link = closestSniper;
-				tank.state = Tank_state::protecting;
+				tank.state = TankState::PROTECTING;
 			}
 		}
 		motion.velocity = chase_direction * enemy.speed;
 		break;
 	}
-	case Tank_state::protecting: {
+	case TankState::PROTECTING: {
 		auto& protect = registry.protections.get(tankEntity);
 		if (!registry.protections.has(protect.link)) {
 			registry.protections.remove(tankEntity);
-			tank.state = Tank_state::defualt;
+			tank.state = TankState::DEFAULT;
 			motion.velocity = chase_direction * enemy.speed;
 			break;
 		}
@@ -353,20 +355,20 @@ void AISystem::updateSniper(Entity sniperEntity, vec2 chase_direction,
 	}
 
 	switch (sniper.state) {
-	case Sniper_State::Avoiding:
+	case SniperState::AVOIDING:
 		if (distanceToPlayer < avoidDistance) {
 			vec2 flee_direction = normalize(motion.position - player_pos);
 			motion.velocity = -chase_direction * enemy.speed;
 		}
 		else if (distanceToPlayer >= avoidDistance && distanceToPlayer <= aimDistance) {
-			sniper.state = Sniper_State::Aiming;
-			sniper.aim_timer = charger_aim_time;
+			sniper.state = SniperState::AIMING;
+			sniper.aim_timer = CHARGER_AIM_TIME;
 		}
 		else {
 			motion.velocity = chase_direction * enemy.speed;
 		}
 		break;
-	case Sniper_State::Aiming: {
+	case SniperState::AIMING: {
 		motion.velocity = { 0, 0 };
 		sniper.aim_timer -= elapsed_ms;
 		float color_offset = ((50 - sniper.aim_timer) / 50) / 4;
@@ -374,11 +376,11 @@ void AISystem::updateSniper(Entity sniperEntity, vec2 chase_direction,
 		registry.colors.remove(sniperEntity);
 		registry.colors.insert(sniperEntity, color);
 		if (sniper.aim_timer <= 0) {
-			sniper.state = Sniper_State::Shooting;
+			sniper.state = SniperState::SHOOTING;
 		}
 		break;
 	}
-	case Sniper_State::Shooting: {
+	case SniperState::SHOOTING: {
 		vec2 bullet_direction = normalize(player_pos - motion.position);
 
 		vec2 up_vector{ 0.0f, -1.0f };
@@ -395,7 +397,7 @@ void AISystem::updateSniper(Entity sniperEntity, vec2 chase_direction,
 		registry.colors.remove(sniperEntity);
 		registry.colors.insert(sniperEntity, color);
 		create_enemy_bullet(renderer, motion.position, bullet_direction * 500.0f, angle_diff, 50, { 0,0,0 });
-		sniper.state = Sniper_State::Avoiding;
+		sniper.state = SniperState::AVOIDING;
 		break;
 	}
 	}
@@ -410,17 +412,17 @@ void AISystem::updateCharger(Entity chargerEntity, vec2 chase_direction,
 
 
 	switch (charger.state) {
-	case Charger_State::Approaching:
-		if (distanceToPlayer <= charger_aggro_range) {
-			charger.state = Charger_State::Aiming;
-			charger.aim_timer = charger_aim_time;
+	case ChargerState::APPROACHING:
+		if (distanceToPlayer <= CHARGER_AGGRO_RANGE) {
+			charger.state = ChargerState::AIMING;
+			charger.aim_timer = CHARGER_AIM_TIME;
 		}
 		else {
 			motion.velocity = chase_direction * enemy.speed;
 
 		}
 		break;
-	case Charger_State::Aiming:
+	case ChargerState::AIMING:
 	{
 		motion.velocity = { 0, 0 };
 
@@ -431,20 +433,20 @@ void AISystem::updateCharger(Entity chargerEntity, vec2 chase_direction,
 		registry.colors.insert(chargerEntity, color);
 		if (charger.aim_timer <= 0) {
 			charger.aim_timer = 0;
-			charger.state = Charger_State::Charging;
+			charger.state = ChargerState::CHARGING;
 			charger.charge_direction = chase_direction;
 		}
 	}
 	break;
-	case Charger_State::Charging:
-		motion.velocity = charger.charge_direction * charger_charge_speed * enemy.speed;
+	case ChargerState::CHARGING:
+		motion.velocity = charger.charge_direction * CHARGER_CHARGE_SPEED * enemy.speed;
 		charger.rest_timer += elapsed_ms * 2;
-		if (charger.rest_timer >= charger_rest_time) {
+		if (charger.rest_timer >= CHARGER_REST_TIME) {
 			charger.rest_timer = 80;
-			charger.state = Charger_State::Resting;
+			charger.state = ChargerState::RESTING;
 		}
 		break;
-	case Charger_State::Resting:
+	case ChargerState::RESTING:
 	{
 		motion.velocity = chase_direction * enemy.speed * ((80 - charger.rest_timer) / 80);
 
@@ -454,7 +456,7 @@ void AISystem::updateCharger(Entity chargerEntity, vec2 chase_direction,
 		registry.colors.insert(chargerEntity, color);
 		charger.rest_timer -= elapsed_ms;
 		if (charger.rest_timer <= 0) {
-			charger.state = Charger_State::Approaching;
+			charger.state = ChargerState::APPROACHING;
 		}
 	}
 	break;
@@ -464,10 +466,10 @@ void AISystem::updateCharger(Entity chargerEntity, vec2 chase_direction,
 ShooterState decideShooterState(const vec2& enemyPos, const vec2& playerPos, float idealRange) {
 	float distance = calculateDistance(enemyPos, playerPos);
 	if (distance > idealRange) {
-		return ShooterState::Approach;
+		return ShooterState::APPROACH;
 	}
 	else {
-		return ShooterState::Dodge;
+		return ShooterState::DODGE;
 	}
 }
 
@@ -481,7 +483,7 @@ void AISystem::init(RenderSystem* renderer_arg) {
 void AISystem::step(float elapsed_ms)
 {
 	frame_count++;
-	if (frame_count % update_frequency != 0) return;
+	if (frame_count % UPDATE_FREQUENCY != 0) return;
 
 	auto& motions_registry = registry.motions;
 	auto& player_registry = registry.players;
@@ -491,7 +493,7 @@ void AISystem::step(float elapsed_ms)
 	vec2 player_velocity = player_motion.velocity;
 
 
-	float prediction_time = update_frequency / 1000;
+	float prediction_time = UPDATE_FREQUENCY / 1000;
 	vec2 predicted_player_pos = player_position + player_velocity * prediction_time;
 
 
@@ -503,41 +505,39 @@ void AISystem::step(float elapsed_ms)
 		float original_speed = enemy.speed;
 		vec2 chase_direction = normalize(predicted_player_pos - minions_pos);
 
-		if (enemy.type == Enemy_TYPE::BASIC) {
+		if (enemy.type == EnemyType::BASIC) {
 			motion.velocity = chase_direction * original_speed;
 		}
-		else if (enemy.type == Enemy_TYPE::ROAMER) {
+		else if (enemy.type == EnemyType::ROAMER) {
 			vec2 direction = normalize(motion.velocity);
 			motion.velocity = direction * (original_speed);
 		}
-		else if (enemy.type == Enemy_TYPE::SHOOTER || enemy.type == Enemy_TYPE::SPLIT_SHOOTER) {
-			ShooterState state = decideShooterState(motion.position, predicted_player_pos, ideal_range_from_player);
+		else if (enemy.type == EnemyType::SHOOTER || enemy.type == EnemyType::SPLIT_SHOOTER) {
+			ShooterState state = decideShooterState(motion.position, predicted_player_pos, IDEAL_RANGE_FROM_PLAYER);
 			switch (state) {
-			case ShooterState::Approach:
-				motion.velocity = chase_direction * (original_speed * approach_speed_factor);
+			case ShooterState::APPROACH:
+				motion.velocity = chase_direction * (original_speed * APPROACH_SPEED_FACTOR);
 				break;
-			case ShooterState::Dodge:
-				motion.velocity = -chase_direction * (original_speed * dodge_speed_factor);
+			case ShooterState::DODGE:
+				motion.velocity = -chase_direction * (original_speed * DODGE_SPEED_FACTOR);
 				break;
 			}
-			shoot(enemy_enitiy, player_position, elapsed_ms * update_frequency);
+			shoot(enemy_enitiy, player_position, elapsed_ms * UPDATE_FREQUENCY);
 		}
-		else if (enemy.type == Enemy_TYPE::CHARGER) {
+		else if (enemy.type == EnemyType::CHARGER) {
 			updateCharger(enemy_enitiy, chase_direction, enemy, motion, elapsed_ms, player_position);
 		}
-		else if (enemy.type == Enemy_TYPE::SNIPER) {
+		else if (enemy.type == EnemyType::SNIPER) {
 			updateSniper(enemy_enitiy, chase_direction, enemy, motion, elapsed_ms, player_position);
 		}
-		else if (enemy.type == Enemy_TYPE::TANK) {
+		else if (enemy.type == EnemyType::TANK) {
 			updateTank(enemy_enitiy, chase_direction, enemy, motion, elapsed_ms, player_position);
 		}
-		else if (enemy.type == Enemy_TYPE::CLEANER) {
+		else if (enemy.type == EnemyType::CLEANER) {
 			updateCleaner(enemy_enitiy, chase_direction, enemy, motion, elapsed_ms);
 		}
-		else if (enemy.type == Enemy_TYPE::BOSS) {
+		else if (enemy.type == EnemyType::BOSS) {
 			updateBoss(enemy_enitiy, chase_direction, enemy, motion, elapsed_ms, player_position);
 		}
 	}
-
-
 }

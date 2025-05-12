@@ -10,9 +10,9 @@ class PhysicsSystem
 {
 public:
     void step(float elapsed_ms);
-    static std::map<Direction, Mesh> loaded_blendy_meshes;
-    static std::map<Direction, Mesh> loaded_minion_meshes;
-    static std::map<Direction, Mesh> loaded_boss_meshes;
+    static std::unordered_map<Direction, Mesh> loaded_blendy_meshes;
+    static std::unordered_map<Direction, Mesh> loaded_minion_meshes;
+    static std::unordered_map<Direction, Mesh> loaded_boss_meshes;
 
     PhysicsSystem()
     {
