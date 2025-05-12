@@ -13,10 +13,10 @@ std::unordered_map<Direction, Mesh> PhysicsSystem::loaded_boss_meshes;
 bool isParallel(const std::vector<vec2>&, const vec2&);
 std::pair<float, float> projectOntoAxis(const std::vector<vec2>&, const vec2&);
 bool projectionsOverlap(const std::pair<float, float>&, const std::pair<float, float>&);
-bool checkMeshCollisionSAT(Mesh*, const Motion&, Mesh*, const Motion&, const box);
+bool checkMeshCollisionSAT(Mesh*, const Motion&, Mesh*, const Motion&, const Box);
 std::vector<vec2> getRectangleEdge(const Motion&, std::vector<vec2>&);
-box calculate_overlap_area(const vec2&, const vec2&, const vec2&, const vec2&);
-bool isPointInBox(const vec2&, const box&);
+Box calculate_overlap_area(const vec2&, const vec2&, const vec2&, const vec2&);
+bool isPointInBox(const vec2&, const Box&);
 void calculateMeshAxes(const std::vector<vec2>& vertices, std::vector<vec2>& axes);
 bool checkForCollision(const std::vector<vec2>& shape1, const std::vector<vec2>& shape2, const std::vector<vec2>& axes);
 Mesh* getMeshForEntity(const Entity& entity);
@@ -156,7 +156,7 @@ bool collides(const Entity& entity1, const Entity& entity2, Motion& motion1, Mot
 		//return true;
 
 		//if (it_one != registry.motions.components.end() && it_two != registry.motions.components.end()) {
-		box overlapBox = calculate_overlap_area(motion1.position, halfBB_one, motion2.position, halfBB_two);
+		Box overlapBox = calculate_overlap_area(motion1.position, halfBB_one, motion2.position, halfBB_two);
 		//if (registry.meshPtrs.has(entity1) && registry.meshPtrs.has(entity2)) {
 
 		Mesh* mesh_one = NULL;
@@ -504,7 +504,7 @@ void PhysicsSystem::step(float elapsed_ms)
 
 
 
-bool checkMeshCollisionSAT(Mesh* mesh, const Motion& motion_one, Mesh* otherMesh, const Motion& motion_two, const box overlapBox) {
+bool checkMeshCollisionSAT(Mesh* mesh, const Motion& motion_one, Mesh* otherMesh, const Motion& motion_two, const Box overlapBox) {
 	std::vector<vec2> axes;
 	std::vector<vec2> shape;
 	std::vector<vec2> otherShape;
@@ -642,7 +642,7 @@ bool projectionsOverlap(const std::pair<float, float>& proj1, const std::pair<fl
 	return !(proj1.second < proj2.first || proj2.second < proj1.first);
 }
 
-box calculate_overlap_area(const vec2& center1, const vec2& halfBB1, const vec2& center2, const vec2& halfBB2) {
+Box calculate_overlap_area(const vec2& center1, const vec2& halfBB1, const vec2& center2, const vec2& halfBB2) {
 	vec2 overlapLeftTop = { std::max(center1.x - halfBB1.x, center2.x - halfBB2.x), std::max(center1.y - halfBB1.y, center2.y - halfBB2.y) };
 	vec2 overlapRightBottom = { std::min(center1.x + halfBB1.x, center2.x + halfBB2.x), std::min(center1.y + halfBB1.y, center2.y + halfBB2.y) };
 
@@ -655,7 +655,7 @@ box calculate_overlap_area(const vec2& center1, const vec2& halfBB1, const vec2&
 	return { overlapCenter, overlapScale };
 }
 
-bool isPointInBox(const vec2& point, const box& bbox) {
+bool isPointInBox(const vec2& point, const Box& bbox) {
 	float left = bbox.center.x - bbox.scale.x;
 	float right = bbox.center.x + bbox.scale.x;
 	float bottom = bbox.center.y - bbox.scale.y;

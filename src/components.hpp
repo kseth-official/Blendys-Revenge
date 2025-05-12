@@ -7,7 +7,9 @@
 #include <map>
 
 struct Mesh;
+
 enum class GEOMETRY_BUFFER_ID;
+
 enum class EntityType {
 	Generic,
 	Player,
@@ -122,7 +124,6 @@ enum class Direction {
 	LEFT,
 	RIGHT
 };
-// Player component
 
 struct Player {
 	float max_speed = 310.f;
@@ -173,11 +174,10 @@ static const std::map<Direction, std::string> boss_direction_mesh = {
 	{Direction::RIGHT, mesh_path("boss_right.obj")}
 };
 
-
-
 struct Mesh_entity {
 
 };
+
 struct Roamer {
 
 };
@@ -209,7 +209,6 @@ struct Sniper {
 	SniperState state = SniperState::AVOIDING;
 	float aim_timer = 100.f;
 };
-
 
 struct Panel {
 
@@ -260,8 +259,6 @@ struct Bullet
 	int penetration = 1;
 	int damage = 25;
 };
-
-
 
 struct Eatable
 {
@@ -400,7 +397,6 @@ struct ParticleEmitter
 	float particle_size;
 };
 
-
 // LightSource component for entities that represent a LightSource
 struct LightSource
 {
@@ -419,10 +415,11 @@ struct LightSource
 	vec3 camera_position;
 };
 
-struct box {
+struct Box {
 	vec2 center;
 	vec2 scale;
 };
+
 /**
  * The following enumerators represent global identifiers refering to graphic
  * assets. For example TEXTURE_ASSET_ID are the identifiers of each texture
@@ -446,7 +443,6 @@ struct box {
  * The final value in each enumeration is both a way to keep track of how many
  * enums there are, and as a default value to represent uninitialized fields.
  */
-//
 enum class TEXTURE_ASSET_ID {
 	BLENDY = 0,
 	BLENDY_NM = BLENDY + 1,
