@@ -194,29 +194,29 @@ bool collides(const Entity& entity1, const Entity& entity2, Motion& motion1, Mot
 Mesh* getMeshForEntity(const Entity& entity) {
 	if (registry.players.has(entity)) {
 		auto& player = registry.players.get(entity);
-		return &PhysicsSystem::loaded_blendy_meshes.at(player.up ? Direction::Up :
-			player.down ? Direction::Down :
-			player.left ? Direction::Left :
-			player.right ? Direction::Right :
-			Direction::Up);
+		return &PhysicsSystem::loaded_blendy_meshes.at(player.up ? Direction::UP :
+			player.down ? Direction::DOWN :
+			player.left ? Direction::LEFT :
+			player.right ? Direction::RIGHT :
+			Direction::UP);
 	}
 	else if (registry.minions.has(entity)) {
 		if (registry.boss.has(entity)) {
 			auto& boss = registry.minions.get(entity);
 
-			return &PhysicsSystem::loaded_boss_meshes.at(boss.up ? Direction::Up :
-				boss.down ? Direction::Down :
-				boss.left ? Direction::Left :
-				boss.right ? Direction::Right :
-				Direction::Down);
+			return &PhysicsSystem::loaded_boss_meshes.at(boss.up ? Direction::UP :
+				boss.down ? Direction::DOWN :
+				boss.left ? Direction::LEFT :
+				boss.right ? Direction::RIGHT :
+				Direction::DOWN);
 		}
 		else {
 			auto& minion = registry.minions.get(entity);
-			return &PhysicsSystem::loaded_minion_meshes.at(minion.up ? Direction::Up :
-				minion.down ? Direction::Down :
-				minion.left ? Direction::Left :
-				minion.right ? Direction::Right :
-				Direction::Down);
+			return &PhysicsSystem::loaded_minion_meshes.at(minion.up ? Direction::UP :
+				minion.down ? Direction::DOWN :
+				minion.left ? Direction::LEFT :
+				minion.right ? Direction::RIGHT :
+				Direction::DOWN);
 		}
 	}
 	return nullptr;

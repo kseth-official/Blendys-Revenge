@@ -117,10 +117,10 @@ struct Cursor {
 };
 
 enum class Direction {
-	Up,
-	Down,
-	Left,
-	Right
+	UP,
+	DOWN,
+	LEFT,
+	RIGHT
 };
 // Player component
 
@@ -154,24 +154,24 @@ struct Player {
 };
 
 static const std::map<Direction, std::string> blendy_direction_mesh = {
-	{Direction::Up, mesh_path("Blendy-up.obj")},
-	{Direction::Down, mesh_path("Blendy-Reduced.obj")},
-	{Direction::Left, mesh_path("Blendy-left.obj")},
-	{Direction::Right, mesh_path("Blendy-right.obj")}
+	{Direction::UP, mesh_path("Blendy-up.obj")},
+	{Direction::DOWN, mesh_path("Blendy-Reduced.obj")},
+	{Direction::LEFT, mesh_path("Blendy-left.obj")},
+	{Direction::RIGHT, mesh_path("Blendy-right.obj")}
 };
 
 static const std::map<Direction, std::string> minion_direction_mesh = {
-	{Direction::Up, mesh_path("Minion-Reduced.obj")},
-	{Direction::Down, mesh_path("Minion-Reduced.obj")},
-	{Direction::Left, mesh_path("minion-left.obj")},
-	{Direction::Right, mesh_path("minion-right.obj")}
+	{Direction::UP, mesh_path("Minion-Reduced.obj")},
+	{Direction::DOWN, mesh_path("Minion-Reduced.obj")},
+	{Direction::LEFT, mesh_path("minion-left.obj")},
+	{Direction::RIGHT, mesh_path("minion-right.obj")}
 };
 
 static const std::map<Direction, std::string> boss_direction_mesh = {
-	{Direction::Up, mesh_path("boss_up.obj")},
-	{Direction::Down, mesh_path("boss_down.obj")},
-	{Direction::Left, mesh_path("boss_left.obj")},
-	{Direction::Right, mesh_path("boss_right.obj")}
+	{Direction::UP, mesh_path("boss_up.obj")},
+	{Direction::DOWN, mesh_path("boss_down.obj")},
+	{Direction::LEFT, mesh_path("boss_left.obj")},
+	{Direction::RIGHT, mesh_path("boss_right.obj")}
 };
 
 
