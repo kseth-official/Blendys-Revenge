@@ -2,7 +2,7 @@
 Blendy's Revenge is a Bullet Hell survival game that I made in a team of 6 using a custom-built game engine for a Video Game Programming Course @ UBC.
 My role was primarily as a Programmer, Project Manager, and Game Designer. 
 
-![](SplashScreen.png)
+![](readme/SplashScreen.png)
 
 ## Peak Gameplay
 <p align="center">
@@ -34,10 +34,10 @@ Teamwork, Communication, Conflict Resolution, Project Management
 
 # Some Images
 ## First Cutscene
-![](Cutscene.png)
+![](readme/Cutscene.png)
 
 ## How To Play
-![](HelpScreen.png)
+![](readme/HelpScreen.png)
 
 ## Early Game
-![](InitialGame.png)
+![](readme/InitialGame.png)
