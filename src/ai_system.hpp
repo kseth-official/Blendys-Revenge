@@ -7,17 +7,16 @@
 #include "world_init.hpp"
 
 enum class ShooterState {
-	Approach,
-	Dodge,
+	APPROACH,
+	DODGE,
 };
-
-
 
 class AISystem
 {
 public:
 	void init(RenderSystem* renderer_arg);
 	void step(float elapsed_ms);
+
 private:
 	void shoot(Entity shooterEntity, const vec2& playerPosition, float elapsed_ms);
 	void boss_shoot(Boss& boss, Motion& motion, const vec2& player_pos, float elapsed_ms);

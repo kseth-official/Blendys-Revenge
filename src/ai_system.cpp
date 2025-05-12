@@ -466,10 +466,10 @@ void AISystem::updateCharger(Entity chargerEntity, vec2 chase_direction,
 ShooterState decideShooterState(const vec2& enemyPos, const vec2& playerPos, float idealRange) {
 	float distance = calculateDistance(enemyPos, playerPos);
 	if (distance > idealRange) {
-		return ShooterState::Approach;
+		return ShooterState::APPROACH;
 	}
 	else {
-		return ShooterState::Dodge;
+		return ShooterState::DODGE;
 	}
 }
 
@@ -515,10 +515,10 @@ void AISystem::step(float elapsed_ms)
 		else if (enemy.type == Enemy_TYPE::SHOOTER || enemy.type == Enemy_TYPE::SPLIT_SHOOTER) {
 			ShooterState state = decideShooterState(motion.position, predicted_player_pos, IDEAL_RANGE_FROM_PLAYER);
 			switch (state) {
-			case ShooterState::Approach:
+			case ShooterState::APPROACH:
 				motion.velocity = chase_direction * (original_speed * APPROACH_SPEED_FACTOR);
 				break;
-			case ShooterState::Dodge:
+			case ShooterState::DODGE:
 				motion.velocity = -chase_direction * (original_speed * DODGE_SPEED_FACTOR);
 				break;
 			}
