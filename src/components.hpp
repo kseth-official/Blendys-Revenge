@@ -37,10 +37,10 @@ enum class BulletState {
 };
 
 enum class SniperState {
-	Avoiding,
-	Aiming,
-	Shooting,
-	Reloading
+	AVOIDING,
+	AIMING,
+	SHOOTING,
+	RELOADING
 };
 
 enum class TankState {
@@ -207,7 +207,7 @@ struct Protection {
 };
 
 struct Sniper {
-	SniperState state = SniperState::Avoiding;
+	SniperState state = SniperState::AVOIDING;
 	float aim_timer = 100.f;
 };
 

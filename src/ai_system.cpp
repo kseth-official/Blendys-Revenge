@@ -355,20 +355,20 @@ void AISystem::updateSniper(Entity sniperEntity, vec2 chase_direction,
 	}
 
 	switch (sniper.state) {
-	case SniperState::Avoiding:
+	case SniperState::AVOIDING:
 		if (distanceToPlayer < avoidDistance) {
 			vec2 flee_direction = normalize(motion.position - player_pos);
 			motion.velocity = -chase_direction * enemy.speed;
 		}
 		else if (distanceToPlayer >= avoidDistance && distanceToPlayer <= aimDistance) {
-			sniper.state = SniperState::Aiming;
+			sniper.state = SniperState::AIMING;
 			sniper.aim_timer = CHARGER_AIM_TIME;
 		}
 		else {
 			motion.velocity = chase_direction * enemy.speed;
 		}
 		break;
-	case SniperState::Aiming: {
+	case SniperState::AIMING: {
 		motion.velocity = { 0, 0 };
 		sniper.aim_timer -= elapsed_ms;
 		float color_offset = ((50 - sniper.aim_timer) / 50) / 4;
@@ -376,11 +376,11 @@ void AISystem::updateSniper(Entity sniperEntity, vec2 chase_direction,
 		registry.colors.remove(sniperEntity);
 		registry.colors.insert(sniperEntity, color);
 		if (sniper.aim_timer <= 0) {
-			sniper.state = SniperState::Shooting;
+			sniper.state = SniperState::SHOOTING;
 		}
 		break;
 	}
-	case SniperState::Shooting: {
+	case SniperState::SHOOTING: {
 		vec2 bullet_direction = normalize(player_pos - motion.position);
 
 		vec2 up_vector{ 0.0f, -1.0f };
@@ -397,7 +397,7 @@ void AISystem::updateSniper(Entity sniperEntity, vec2 chase_direction,
 		registry.colors.remove(sniperEntity);
 		registry.colors.insert(sniperEntity, color);
 		create_enemy_bullet(renderer, motion.position, bullet_direction * 500.0f, angle_diff, 50, { 0,0,0 });
-		sniper.state = SniperState::Avoiding;
+		sniper.state = SniperState::AVOIDING;
 		break;
 	}
 	}
