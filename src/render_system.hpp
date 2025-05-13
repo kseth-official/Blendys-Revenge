@@ -398,7 +398,7 @@ class RenderSystem {
 	GLuint m_font_VAO;
 	GLuint m_font_VBO;
 
-	const std::string FONT_FOLDER_PATH = "..//..//..//data//fonts//";
+	const std::string FONT_FOLDER_PATH = std::string(PROJECT_SOURCE_DIR) + "//data//fonts//";
 	const std::string DOT_TTF = ".ttf";
 	const std::string Kenney_Pixel_Square = "Kenney_Pixel_Square";
 	const std::string Kenney_Future_Narrow = "Kenney_Future_Narrow";
