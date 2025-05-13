@@ -3,3 +3,4 @@ out
 /ext/project_path.hpp
 /data/meshes/Bullet.mtl
 .idea
+cmake-build-debug
