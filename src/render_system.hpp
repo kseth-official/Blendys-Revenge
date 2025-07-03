@@ -44,19 +44,12 @@ class RenderSystem {
 			std::pair<GEOMETRY_BUFFER_ID, std::string>(GEOMETRY_BUFFER_ID::MINION, mesh_path("Minion-Reduced.obj")),
 			std::pair<GEOMETRY_BUFFER_ID, std::string>(GEOMETRY_BUFFER_ID::BULLET, mesh_path("Bullet-color.obj")),
 			std::pair<GEOMETRY_BUFFER_ID, std::string>(GEOMETRY_BUFFER_ID::MINION_BULLET, mesh_path("Minion_Bullet-color.obj")),
-		  
 			std::pair<GEOMETRY_BUFFER_ID, std::string>(GEOMETRY_BUFFER_ID::GRAPE, mesh_path("grape.obj")),
-
 			std::pair<GEOMETRY_BUFFER_ID, std::string>(GEOMETRY_BUFFER_ID::LEMON, mesh_path("lemon.obj")),
-
 			std::pair<GEOMETRY_BUFFER_ID, std::string>(GEOMETRY_BUFFER_ID::ORANGE, mesh_path("orange.obj")),
-
 			std::pair<GEOMETRY_BUFFER_ID, std::string>(GEOMETRY_BUFFER_ID::PROTEIN_POWER, mesh_path("protein_powder.obj")),
-
 			std::pair<GEOMETRY_BUFFER_ID, std::string>(GEOMETRY_BUFFER_ID::BATTERY, mesh_path("battery.obj")),
-
 			std::pair<GEOMETRY_BUFFER_ID, std::string>(GEOMETRY_BUFFER_ID::BOSS, mesh_path("boss_down.obj")),
-
 		  // specify meshes of other assets here
 	};
 
@@ -265,7 +258,6 @@ class RenderSystem {
 			textures_path("shooter_u1_n.png"),
 			textures_path("shooter_u2.png"),
 			textures_path("shooter_u2_n.png"),
-
 
 			textures_path("Sniper_d0.png"),
 			textures_path("Sniper_d0_n.png"),
