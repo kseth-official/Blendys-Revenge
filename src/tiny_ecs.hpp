@@ -7,17 +7,18 @@
 #include <functional>
 #include <typeindex>
 #include <assert.h>
+#include <iterator>
 
-// Unique identifyer for all entities
+// Unique identifier for all entities
 class Entity
 {
 	unsigned int id;
-	static unsigned int id_count; // starts from 1, entit 0 is the default initialization
+	static unsigned int id_count; // starts from 1, entity 0 is the default initialization
 public:
 	Entity()
 	{
 		id = id_count++;
-		// Note, indices of already deleted entities arent re-used in this simple implementation.
+		// Note, indices of already deleted entities aren't re-used in this simple implementation.
 	}
 	operator unsigned int() { return id; } // this enables automatic casting to int
 };
@@ -63,7 +64,7 @@ public:
 		return components.back();
 	};
 
-	// The emplace function takes the the provided arguments Args, creates a new object of type Component, and inserts it into the ECS system
+	// The emplace function takes the provided arguments Args, creates a new object of type Component, and inserts it into the ECS system
 	template<typename... Args>
 	Component& emplace(Entity e, Args &&... args) {
 		return insert(e, Component(std::forward<Args>(args)...));
@@ -84,7 +85,7 @@ public:
 		return map_entity_componentID.count(entity) > 0;
 	}
 
-	// Remove an component and pack the container to re-use the empty space
+	// Remove a component and pack the container to re-use the empty space
 	void remove(Entity e)
 	{
 		if (has(e))
@@ -129,7 +130,7 @@ public:
 		// Now re-arrange the components (Note, creates a new vector, which may be slow! Not sure if in-place could be faster: https://stackoverflow.com/questions/63703637/how-to-efficiently-permute-an-array-in-place-using-stdswap)
 		std::vector<Component> components_new; components_new.reserve(components.size());
 		std::transform(entities.begin(), entities.end(), std::back_inserter(components_new), [&](Entity e) { return std::move(get(e)); }); // note, the get still uses the old hash map (on purpose!)
-		components = std::move(components_new); // note, we use move operations to not create unneccesary copies of objects, but memory is still allocated for the new vector
+		components = std::move(components_new); // note, we use move operations to not create unnecessary copies of objects, but memory is still allocated for the new vector
 		// Fill the new hashmap
 		for (unsigned int i = 0; i < entities.size(); i++)
 			map_entity_componentID[entities[i]] = i;
